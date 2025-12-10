@@ -1,0 +1,49 @@
+{
+  "sources": [
+    {
+      "name": "Positive News",
+      "url": "https://www.positive.news/feed/",
+      "language": "en"
+    },
+    {
+      "name": "Good News Network",
+      "url": "https://www.goodnewsnetwork.org/feed/",
+      "language": "en"
+    },
+    {
+      "name": "The Optimist Daily",
+      "url": "https://www.optimistdaily.com/feed/",
+      "language": "en"
+    },
+    {
+      "name": "Happy Eco News",
+      "url": "https://happyeconews.com/feed/",
+      "language": "en"
+    },
+    {
+      "name": "Reasons to be Cheerful",
+      "url": "https://reasonstobecheerful.world/feed/",
+      "language": "en"
+    },
+    {
+      "name": "BBC News Health",
+      "url": "http://feeds.bbci.co.uk/news/health/rss.xml",
+      "language": "en"
+    },
+    {
+      "name": "ScienceDaily Health",
+      "url": "https://www.sciencedaily.com/rss/top/health.xml",
+      "language": "en"
+    },
+    {
+      "name": "ScienceDaily All",
+      "url": "https://www.sciencedaily.com/rss/all.xml",
+      "language": "en"
+    },
+    {
+      "name": "The Better India",
+      "url": "https://www.thebetterindia.com/feed/",
+      "language": "en"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "upnews-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node test-claude.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
+    "@supabase/supabase-js": "^2.86.2",
+    "dotenv": "^17.2.3",
+    "rss-parser": "^3.13.0"
+  }
+}
