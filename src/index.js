@@ -4,7 +4,10 @@ import { selectRandomArticlePerCategory } from './category-mapper.js';
 import { supabase } from './supabase-client.js';
 
 async function generateDailyArticles() {
-  const today = new Date().toISOString().split('T')[0];
+  // Générer les articles pour le lendemain
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const targetDate = tomorrow.toISOString().split('T')[0];
 
   try {
     // 1. Récupérer toutes les actualités des flux RSS
@@ -44,17 +47,17 @@ async function generateDailyArticles() {
     for (const [category] of Object.entries(selectedArticles)) {
       console.log(`\n--- Traitement: ${category} ---`);
 
-      // Vérifier si un article existe déjà pour aujourd'hui dans cette catégorie
+      // Vérifier si un article existe déjà pour demain dans cette catégorie
       const { data: existing } = await supabase
         .from('articles')
         .select('id')
-        .eq('published_date', today)
+        .eq('published_date', targetDate)
         .eq('language', 'fr')
         .eq('category', category)
         .single();
 
       if (existing) {
-        console.log(`Un article existe déjà pour ${category} aujourd'hui`);
+        console.log(`Un article existe déjà pour ${category} pour la date ${targetDate}`);
         skippedCount++;
         continue;
       }
@@ -101,11 +104,11 @@ async function generateDailyArticles() {
 
       console.log(`Article généré: ${title.substring(0, 50)}...`);
 
-      // Insérer dans Supabase
+      // Insérer dans Supabase avec la date de demain
       const { data, error } = await supabase
         .from('articles')
         .insert({
-          published_date: today,
+          published_date: targetDate,
           language: 'fr',
           title: title,
           summary: newsItem.description.substring(0, 200),
