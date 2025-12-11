@@ -138,7 +138,17 @@ async function generateDailyArticles() {
 
   } catch (error) {
     console.error('Erreur globale:', error);
+    process.exit(1); // Sortir avec code d'erreur
   }
 }
 
-generateDailyArticles();
+// Exécuter la génération et terminer le processus
+generateDailyArticles()
+  .then(() => {
+    console.log('\n✅ Génération terminée avec succès');
+    process.exit(0); // Sortir proprement
+  })
+  .catch((error) => {
+    console.error('\n❌ Erreur lors de la génération:', error);
+    process.exit(1); // Sortir avec code d'erreur
+  });
