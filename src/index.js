@@ -4,8 +4,6 @@ import { selectRandomArticlePerCategory } from './category-mapper.js';
 import { supabase } from './supabase-client.js';
 
 async function generateDailyArticles() {
-  console.log('Génération des articles du jour...');
-  console.log('Date:', new Date().toISOString().split('T')[0]);
   const today = new Date().toISOString().split('T')[0];
 
   try {
@@ -30,15 +28,21 @@ async function generateDailyArticles() {
     let generatedCount = 0;
     let skippedCount = 0;
 
-    for (const [category, newsItem] of Object.entries(selectedArticles)) {
+      // Récupérer toutes les URLs déjà traitées dans les 15 derniers jours
+      const fifteenDaysAgo = new Date();
+      fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
+      const fifteenDaysAgoStr = fifteenDaysAgo.toISOString().split('T')[0];
+
+      const { data: recentArticles } = await supabase
+        .from('articles')
+        .select('source_url')
+        .gte('published_date', fifteenDaysAgoStr);
+
+      const usedUrls = new Set(recentArticles?.map(a => a.source_url) || []);
+      console.log(`URLs déjà utilisées dans les 15 derniers jours: ${usedUrls.size}`);
+
+    for (const [category] of Object.entries(selectedArticles)) {
       console.log(`\n--- Traitement: ${category} ---`);
-      console.log(`Article: ${newsItem.title.substring(0, 60)}...`);
-      console.log(`Source: ${newsItem.source}`);
-      console.log(`Catégorie initiale (RSS): ${newsItem.category || 'non définie'}`);
-      console.log(`Catégorie assignée (app): ${category}`);
-      if (newsItem.appCategory) {
-        console.log(`Catégorie dans l'objet: ${newsItem.appCategory}`);
-      }
 
       // Vérifier si un article existe déjà pour aujourd'hui dans cette catégorie
       const { data: existing } = await supabase
@@ -53,6 +57,35 @@ async function generateDailyArticles() {
         console.log(`Un article existe déjà pour ${category} aujourd'hui`);
         skippedCount++;
         continue;
+      }
+
+      // Récupérer tous les articles de qualité pour cette catégorie
+      const categoryArticles = groupedNews[category] || [];
+      const qualityArticles = categoryArticles.filter(article =>
+        article.categoryConfidence === 'medium' || article.categoryConfidence === 'high'
+      );
+
+      // Filtrer les articles dont l'URL n'a pas déjà été traitée
+      const availableArticles = qualityArticles.filter(article => !usedUrls.has(article.url));
+
+      console.log(`Articles disponibles: ${availableArticles.length}/${qualityArticles.length}`);
+
+      if (availableArticles.length === 0) {
+        console.log(`Aucun article non traité disponible pour ${category}`);
+        skippedCount++;
+        continue;
+      }
+
+      // Sélectionner un article aléatoire parmi les articles disponibles
+      const randomIndex = Math.floor(Math.random() * availableArticles.length);
+      const newsItem = availableArticles[randomIndex];
+
+      console.log(`Article sélectionné: ${newsItem.title.substring(0, 60)}...`);
+      console.log(`Source: ${newsItem.source}`);
+      console.log(`Catégorie initiale (RSS): ${newsItem.category || 'non définie'}`);
+      console.log(`Catégorie assignée (app): ${category}`);
+      if (newsItem.appCategory) {
+        console.log(`Catégorie dans l'objet: ${newsItem.appCategory}`);
       }
 
       // Choisir un prompt aléatoire
