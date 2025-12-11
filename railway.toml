@@ -2,10 +2,7 @@
 builder = "NIXPACKS"
 
 [deploy]
-# Pas de startCommand - le script s'exécute uniquement via le cron
+startCommand = "node src/index.js"
+cronSchedule = "54 13 * * *"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
-
-[[cron]]
-schedule = "23 09 * * *"
-command = "node src/index.js"
