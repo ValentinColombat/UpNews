@@ -1,7 +1,8 @@
 import { readFile } from 'fs/promises';
 import { existsSync } from 'fs';
 
-// Analyser les logs de catégorisation
+//=== Analyser les logs de catégorisation ===//
+
 export async function analyzeCategoryLogs() {
   const logFile = './logs/categorization.log';
 
@@ -97,5 +98,4 @@ export async function analyzeCategoryLogs() {
   console.log('\n=== FIN DE L\'ANALYSE ===\n');
 }
 
-// Lancer l'analyse
 analyzeCategoryLogs();

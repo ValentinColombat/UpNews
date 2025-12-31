@@ -28,7 +28,7 @@ async function logCategorization(article, category, method, confidence) {
     title: article.title,
     sourceCategory: article.category,
     assignedCategory: category,
-    method: method, // 'source_mapping', 'keyword_match', 'fallback'
+    method: method, // Dans l'ordre : 'source_mapping', 'keyword_match', 'fallback'
     confidence: confidence, // 'high', 'medium', 'low'
     source: article.source,
     url: article.url

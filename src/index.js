@@ -4,7 +4,6 @@ import { selectRandomArticlePerCategory } from './category-mapper.js';
 import { supabase } from './supabase-client.js';
 
 async function generateDailyArticles() {
-  // Générer les articles pour le lendemain
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const targetDate = tomorrow.toISOString().split('T')[0];
@@ -18,7 +17,7 @@ async function generateDailyArticles() {
       return;
     }
 
-    // 2. Catégoriser et grouper par thème via mapping statique
+    // 2. Catégoriser et grouper par thème via mapping
     const groupedNews = await categorizeAndGroupNews(allNews);
 
     // 3. Sélectionner aléatoirement 1 article par catégorie
@@ -145,10 +144,10 @@ async function generateDailyArticles() {
 // Exécuter la génération et terminer le processus
 generateDailyArticles()
   .then(() => {
-    console.log('\n✅ Génération terminée avec succès');
+    console.log('\n Génération terminée avec succès');
     process.exit(0); // Sortir proprement
   })
   .catch((error) => {
-    console.error('\n❌ Erreur lors de la génération:', error);
+    console.error('\n Erreur lors de la génération:', error);
     process.exit(1); // Sortir avec code d'erreur
   });
