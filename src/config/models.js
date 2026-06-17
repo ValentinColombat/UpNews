@@ -10,10 +10,10 @@ export const CLAUDE_MODELS = {
   FAST: 'claude-haiku-4-5-20251001',
   
   // Modèle équilibré (génération d'articles, rédaction)
-  BALANCED: 'claude-sonnet-4-20250514',
-  
+  BALANCED: 'claude-sonnet-4-6',
+
   // Modèle puissant (tâches complexes, analyse approfondie)
-  POWERFUL: 'claude-sonnet-4-20250514',
+  POWERFUL: 'claude-sonnet-4-6',
 };
 
 // Alias pour clarifier l'usage

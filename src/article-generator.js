@@ -29,6 +29,7 @@ export async function generateArticle(newsItem, promptType = 'classic') {
   const message = await anthropic.messages.create({
     model: MODELS.articleGeneration,
     max_tokens: 1500,
+    output_config: { effort: 'medium' },
     messages: [{
       role: 'user',
       content: prompt

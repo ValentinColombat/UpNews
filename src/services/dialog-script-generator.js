@@ -58,6 +58,7 @@ RAPPEL : Vérifie que tu as AU MOINS 8 répliques avant de répondre.
     const message = await anthropic.messages.create({
       model: MODELS.articleGeneration,
       max_tokens: 1800,
+      output_config: { effort: 'medium' },
       messages: [{ role: 'user', content: prompt }],
     });
 
